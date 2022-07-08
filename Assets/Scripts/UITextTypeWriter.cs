@@ -17,7 +17,9 @@ public class UITextTypeWriter : MonoBehaviour
     private bool lastCharPunctuation = false;
     private char charComma;
     private char charPeriod;
+    public AudioSource audioText;
 
+ 
     void Awake()
     {
         text = GetComponent<Text>();
@@ -32,10 +34,16 @@ public class UITextTypeWriter : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        audioText = GetComponent<AudioSource>();
+        Debug.Log(audioText);
+    }
+
     //Update text and start typewriter effect
     public void ChangeText(string textContent, float delayBetweenChars = 0f)
     {
-        StopCoroutine(PlayText()); //stop Coroutime if exist
+        StopCoroutine(PlayText()); //stop Coroutine if exist
         story = textContent;
         text.text = ""; //clean text
         Invoke("Start_PlayText", delayBetweenChars); //Invoke effect
@@ -44,11 +52,11 @@ public class UITextTypeWriter : MonoBehaviour
     void Start_PlayText()
     {
         StartCoroutine(PlayText());
+        //audio.Pause();
     }
 
     IEnumerator PlayText()
     {
-
         foreach (char c in story)
         {
             delayBetweenChars = originDelayBetweenChars;
