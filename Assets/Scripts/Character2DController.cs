@@ -11,9 +11,11 @@ public class Character2DController : MonoBehaviour
 
     private Rigidbody rb;
 
+    Animator animator;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -21,6 +23,18 @@ public class Character2DController : MonoBehaviour
     {
         var movement = Input.GetAxis("Horizontal");
         transform.position += new Vector3(movement, 0) * Time.deltaTime * MovementSpeed;
+
+        if (movement != 0)
+        {
+            animator.SetBool("isWalking", true);
+            float rotation = movement < 0 ? -90f : 90;
+            transform.rotation = Quaternion.Euler(0, rotation, 0f);
+        }
+
+        else
+        {
+            animator.SetBool("isWalking", false);
+        }
 
         if (Input.GetButtonDown("Jump") && Mathf.Abs(rb.velocity.y) < 0.001f)
         {
